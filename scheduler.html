@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html><head>
+	<meta http-equiv="Content-type" content="text/html; charset=UTF-8">
+	<title>Team Board</title>
+	<link href="./static/bootstrapcss.css" rel="stylesheet">
+	<script type="text/javascript" src="./static/bootstrap1.js"></script>
+	<script type="text/javascript" src="./static/bootstrap2.js"></script>
+	<script type="text/javascript" src="./static/bootstrap3.js"></script>
+	<script async="" src="./static/analytics.js"></script>
+	<script src="./static/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./static/dhtmlxscheduler_limit.js"></script>
+	<script src="./static/dhtmlxscheduler_timeline.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./static/dhtmlxscheduler_treetimeline.js" type="text/javascript" charset="utf-8"></script>
+	<script src="./static/dhtmlxscheduler_tooltip.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="./static/dhtmlxscheduler_material.css">
+	<link rel="stylesheet" type="text/css" href="./static/team.css">
+	<script src="../static/jquery-3.4.0.js"></script>
+	<script src="../static/jquery-3.4.0.js"></script>
+	<script src="./static/auto.js"></script>
+<style type="text/css">
+	html, body{
+		margin:0px;
+		padding:0px;
+		height:100%;
+		overflow:hidden;
+	}	
+	.one_line{
+		white-space:nowrap;
+		overflow:hidden;
+		padding-top:5px; padding-left:5px;
+		text-align:left !important;
+	}
+	.red_section {
+		background-color: grey;
+		opacity: 0.55;
+		filter: alpha(opacity = 25);
+	}
+	html body div#scheduler_here.dhx_cal_container.dhx_scheduler_timeline div.dhx_cal_data div.dhx_timeline_table_wrapper div.dhx_timeline_data_wrapper.dhx_timeline_scrollable_data div.dhx_timeline_data_col div.dhx_matrix_line div.dhx_marked_timespan.dhx_matrix_now_time{
+		color:black;
+	}
+</style>
+</head>
+<body onload="init();">
+	<div id="header"> 
+  <br><br>
+  <div class="row">
+      <div class="col-sm-4">
+      <h1><b>&nbsp;Team Board</b></h1>
+      </div>
+          <div class="col-sm-8">
+            <div id="links">
+        	<form method='POST' action="">
+            <input value="1" style="display:none" name="scale">	
+            <button class="btn btn-danger"id="scale2" class="gantt_radio" type="submit">Week</button>
+        	</form>
+        	<form method='POST' action=""> 
+            <input value="2" style="display:none" name="scale">	
+            <button class="btn btn-success"id="scale3" class="gantt_radio" type="submit">Month</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+            </form>
+          	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+            <form method='POST' action="">
+            <input id="start" type="date" name="start" class="dateinput">
+            <input id="end" type="date" name="end" class="dateinput" placeholder="Start">
+            <button class="btn btn-warning" type="submit">Filter</button>
+            </form>
+            <form method='POST' action="">
+            <input id="search" type="text" name="searchartist" onchange="searchartist()">
+            <button class="btn btn-info" onclick="search()">Search</button>
+        	</form>
+        	</div>
+      </div>
+    </div>
+  </div>
+  <div id="my_form" style="height: 80%;overflow-y: scroll;">
+		<!-- <label for="description">Event text </label><input type="text" name="description" value="" id="description"><br>
+		<label for="custom1">Custom 1 </label><input type="text" name="custom1" value="" id="custom1"><br>
+		<label for="custom2">Custom 2 </label><input type="text" name="custom2" value="" id="custom2"><br><br> -->
+		<div id="addformhead">
+			<h5><span id="addtaskheader">ADD TASK</span></h5>
+		</div> 
+		    <br>
+		    <label for="Project" class="label"><b>Project</b></label>&nbsp;&nbsp;
+		    <select id="Project" name="Project" style="color:#006bb3;width:100%"required>
+		    <option value="ROT">ROT</option>
+		    <option value="2D Element">2D Element</option>
+		    <option value="Paint">Paint</option>
+		    <option value="Mattepaint">Mattepaint</option>
+		    <option value="Concept Art">Concept Art</option>
+		    <option value="2D Layout">2D Layout</option>
+		    <option value="Slapcomp">Slapcomp</option>
+		    <option value="Precomp">Precomp</option>
+		    <option value="Comp">Comp</option>
+		    <option value="2D Test">2D Test</option>
+		    </select>
+		<br><br>
+		    <label for="Sequence" class="label"><b>Sequence</b></label>&nbsp;&nbsp;
+		    <input type="text" id="Sequence" name="Sequence" placeholder="Sequence" style="color:#006bb3;width:100%"required>
+		<br><br>
+		    <label for="Scope" class="label"><b>Scope</b></label>&nbsp;&nbsp;
+		    <input type="text" id="Scope" name="Scope" placeholder="Scope" style="color:#006bb3;width:100%"required>
+		<br><br>
+		    <label for="Task" class="label"><b>Task</b></label>&nbsp;&nbsp;
+		    <br>
+		    <select id="Task" name="Task" style="color:#006bb3;width:100%" required>
+		    <option value="ROT">ROT</option>
+		    <option value="2D Element">2D Element</option>
+		    <option value="Paint">Paint</option>
+		    <option value="Mattepaint">Mattepaint</option>
+		    <option value="Concept Art">Concept Art</option>
+		    <option value="2D Layout">2D Layout</option>
+		    <option value="Slapcomp">Slapcomp</option>
+		    <option value="Precomp">Precomp</option>
+		    <option value="Comp">Comp</option>
+		    <option value="2D Test">2D Test</option>
+		    <option value="MatchMove">MatchMove</option>
+		    <option value="Texturing">Texturing</option>
+		    <option value="Shading">Shading</option>
+		    <option value="Rigging">Rigging</option>
+		    <option value="3D Animation">3D Animation</option>
+		    <option value="ShotSculpt">ShotSculpt</option>
+		    <option value="Dynamics">Dynamics</option>
+		    <option value="Model">Model</option>
+		    <option value="Lighting">Lighting</option>
+		    <option value="3D Test">3D Test</option>
+		    <option value="LookDev">LookDev</option>
+		    <option value="HDRI">HDRI</option>
+		    <option value="3D Layout">3D Layout</option>
+		    <option value="Previz">Previz</option>
+		    <option value="Pipe Test">Pipe Test</option>
+		    <option value="Pipe Out">Pipe Out</option>
+		    </select>
+		<br><br>
+			<label for="Description" class="label"><b>Description</b></label>&nbsp;&nbsp;
+		    <input type="text" id="Description" name="Description" placeholder="Description" style="color:#006bb3;width:100%" required>
+			<br><br>
+			<label for="FMD" class="label"><b>FMD</b></label>&nbsp;&nbsp;
+		    <input type="text" id="FMD" name="FMD" placeholder="FMD" style="color:#006bb3;width:100%" required>
+			<br><br>
+			<label for="EMD" class="label"><b>EMD</b></label>&nbsp;&nbsp;
+		    <input type="text" id="EMD" name="EMD" placeholder="EMD" style="color:#006bb3;width:100%" required>
+			<br><br>
+			<label for="startframe" class="label"><b>Startframe</b></label>&nbsp;&nbsp;
+			<input type="text" id="startframe" name="startframe" placeholder="Startframe" style="color:#006bb3;width:100%" required>
+			<br><br>
+			<label for="endframe" class="label"><b>Endframe</b></label>&nbsp;&nbsp;
+			<input type="text" id="endframe" name="endframe" placeholder="Endframe" style="color:#006bb3;width:100%" required>
+			<br><br>
+			<label for="startday" class="label"><b>Bidstart</b></label>&nbsp;&nbsp;<br>
+			<div style="display:inline-block">
+				<input style="width: 5%;" value="00" type="text" id="starthours" name="starthours" style="color:#006bb3;" required> :
+				<input style="width: 5%;" value="00" type="text" id="startmin" name="startmin" style="color:#006bb3;" required>
+				<select style="width: 6%;" id="ampm" name="ampm" style="color:#006bb3;" required>
+					<option>AM</option>
+					<option>PM</option>
+				</select>
+				<input style="width: 10%;" value="10" type="text" id="startday" name="startday" style="color:#006bb3;" required>
+				<input style="width: 10%;" value="July" type="text" id="startmonth" name="startmonth" style="color:#006bb3;" required>
+				<input style="width: 10%;" value="2019" type="text" id="startyear" name="startyear" style="color:#006bb3;" required>
+			</div>
+			<br><br>
+			<label for="artist" class="label"><b>Artist</b></label>&nbsp;&nbsp;<br>
+			<input type="text" id="artist" name="artist" style="color:#006bb3;width:80%" required>
+			<br><br>
+		<!-- <div id="addtaskfooter">
+			<div id="footerbuttons">
+				<button class="btn btn-info" style="font-size: 10px;padding: 4px;" onclick="save_form()">Commit</button>
+				<button class="btn btn-danger" style="font-size: 10px;padding: 4px;" onclick="close_form()">Cancel</button>
+			</div>
+		</div> -->
+
+		<div id="addtaskfooter">
+			<div style="text-align: right;">
+				<button class="btn btn-success" style="font-size: 10px;padding: 4px;" onclick="save_form()">Commit</button>
+				<button class="btn btn-danger" style="font-size: 10px;padding: 4px;" onclick="close_form()">Cancel</button>
+			</div>
+		</div>
+
+		<!-- <input type="button" name="delete" value="Delete" id="delete" style='width:100px;' onclick="delete_event()"> -->
+	</div>  
+  <script type="text/javascript" charset="utf-8">
+	function init() {
+		// console.log("{{data}}");
+
+		scheduler.locale.labels.timeline_tab = "Timeline";
+		scheduler.locale.labels.section_custom="Section";
+		scheduler.config.details_on_create=true;
+		scheduler.config.details_on_dblclick=true;
+		scheduler.templates.event_text=function(start, end, event){
+    return "<a href='http://some.com/details.php?for="+event.id+"'>"
+    +event.text+"</a>";
+}
+		var elements = [ // original hierarhical array to display
+			
+		];
+		var element , child , data = [] , subdata , startdate , enddate;
+		{%for dept in data%}
+			// console.log("{{dept['Dept']}}");
+			element = {key:"{{dept['Dept']}}", label:"{{dept['Dept']}}", open: true, children: []};
+			{%for artist in dept['Artist']%}
+				child = {key:"{{artist[0]}}", label:"{{artist[0]}}"};
+				element['children'].push(child); 
+				// console.log("{{artist[0]}}");
+				{%for task in artist[3]%}
+					// console.log("{{task}}");
+					startdate = Date();
+					enddate = Date();
+					subdata = { start_date: "{{task[1]}}", end_date: "{{task[2]}}", text:"{{task[0]}}", section_id:"{{artist[0]}}",emd:"{{task[3]}}",cmd:"{{task[4]}}"};
+					// console.log(subdata);
+					// console.log("{{task[0]}} - {{task[1]}} - {{task[2]}}");
+					data.push(subdata);
+					// console.log(subdata);
+				{%endfor%}
+			{%endfor%}
+			elements.push(element);
+		{%endfor%}
+		scheduler.createTimelineView({
+			section_autoheight: false,
+			name:	"timeline",
+			x_unit: "day",
+		    x_date: "%j %D",
+			x_step:	1,
+			scrollable:true,
+			x_size: {{duration}},
+			x_start: 0,
+			x_length:{{duration}},
+			y_unit: elements,
+			y_property:	"section_id",
+			align:"left",
+		 	dx: 560,
+			render: "tree",
+			folder_dy:30,
+			dy:60,
+			second_scale:{
+		    x_unit:	"week",
+			x_date:	"Week %W"
+		  }
+		});
+		
+
+		scheduler.templates.tooltip_text = function(start_date,end_date,event,id,emd,cmd) {
+			// console.log(event);
+			// console.log(event.id);
+			// console.log(event.emd);
+			// console.log(event.cmd);
+			var sid = event.section_id.split('-');
+			var emd = sid[1];
+			// console.log(emd);
+			var cmd = sid[2];
+			var st = start_date.toString().split(' ');
+			console.log(st);
+			var et = end_date.toString().split(' ');
+			console.log(et);
+		    return "<div style='background-color:#ffffcc;padding:4px;'><span style='color:#003366'><b>Task:</b></span>"+event.text+"<b>&nbsp;&nbsp;<span style='color:#003366'>EMD:</span></b>"+event.emd+"<b>&nbsp;&nbsp;<span style='color:#003366'>CMD:</span></b>"+event.cmd+"<br/><span style='color:#003366'><b>Start date:</b></span>"+
+		    st[0]+','+st[1]+' '+st[2]+','+st[3]+' ' + st[4]+"<br/><b><span style='color:#003366'>End date:</b></span> "+et[0]+','+et[1]+' '+et[2]+','+et[3]+' ' + et[4]+"</div>";
+		};
+
+		scheduler.templates.timeline_scale_label = function(key, label, section){
+		label = label.split('-');
+		if(label[1]=='dept'){
+			return label[0];
+			console.log(label);
+		}
+		else if(label[1]==0){
+			return ["<table cellspacing='0' class='timeline-cell-inner'><tr>",
+				"<td style='background-color:red;opacity:0.5;color:white'><b> "+label[0]+" </b> </td>",
+				"<td style='background-color:red;color:white;opacity:0.5;'> "+label[1]+"</td>",
+				"<td style='background-color:red;color:white;opacity:0.5;'><b>"+label[2]+"</b></td>",
+			"</tr></table>"].join("");
+			// console.log(label);
+			// return "HELLO";
+		}
+		else{
+			return ["<table cellspacing='0' class='timeline-cell-inner'><tr>",
+				"<td> <b> "+label[0]+" </b> </td>",
+				"<td> "+label[1]+"</td>",
+				"<td> <b> "+label[2]+"</b></td>",
+			"</tr></table>"].join("");
+		}
+		};
+		// scheduler.addMarkedTimespan({  
+		//     days:  6,               
+		//     zones: "fullday",
+		//     css: "red_section"       
+		// });
+		scheduler.addMarkedTimespan({  
+		    days:  0,               
+		    zones: "fullday",
+		    css: "red_section"       
+		});
+		// scheduler.attachEvent("onEventAdded", function(id,ev){
+		    //any custom logic here
+		    // console.log(ev);
+		    
+		// });
+		scheduler.attachEvent("onEventChanged", function(id,ev){
+		    //any custom logic here
+		    console.log(ev);
+		    var xhr=new XMLHttpRequest();
+        	xhr.open('POST','/updatescheduleredit','true');
+        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	        var data = JSON.stringify(ev)
+	        console.log(data);
+	        xhr.send(data);
+		});
+		scheduler.attachEvent("onEventDeleted", function(id,ev){
+		    // custom code
+		    console.log(ev);
+		    var xhr=new XMLHttpRequest();
+        	xhr.open('POST','/updateschedulerdelete','true');
+        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	        var data = JSON.stringify(ev)
+	        console.log(data);
+	        xhr.send(data);
+		});
+		// scheduler.attachEvent("onBeforeLightbox", function (id){
+		//     return false;
+		// });
+		// scheduler.config.readonly = true;
+
+		
+		scheduler.attachEvent("onBeforeDrag", function(id){
+			return false;
+			});
+		// scheduler.addMarkedTimespan({start_date: new Date(2019,7,6), end_date: new Date(2019,7,7), css: "red_section" });
+
+
+		
+
+		scheduler.init('scheduler_here',new Date("{{st}}"),"timeline");
+		scheduler.parse(data);
+	}
+		
+		var html = function(id) { return document.getElementById(id); }; //just a helper
+
+		scheduler.showLightbox = function(id) {
+			var ev = scheduler.getEvent(id);
+			scheduler.startLightbox(id, html("my_form"));
+			// html("description").focus();
+			html("Scope").value = ev.text;
+			artistname = ev.section_id.split('-');
+			html("artist").value = artistname[0];
+			console.log(ev.start_date);
+			var st = ev.start_date.toString();
+			// console.log(st);
+			st = st.split(' ');
+			console.log(st[0],st[1],st[2],st[3]);
+			document.getElementById("startday").value = st[3];
+			document.getElementById("startmonth").value = st[2];
+			document.getElementById("startyear").value = st[1];
+		};
+
+		function save_form() {
+			var ev = scheduler.getEvent(scheduler.getState().lightbox_id);
+			// console.log(ev);
+			var Project = document.getElementById("Project").value;
+			var Scope = document.getElementById("Scope").value;
+			var Sequence = document.getElementById("Sequence").value;
+			var Task = document.getElementById("Task").value;
+			var Description = document.getElementById("Description").value;
+			var FMD= document.getElementById("FMD").value;
+			var EMD = document.getElementById("EMD").value;
+			var startframe = document.getElementById("startframe").value;
+			var endframe = document.getElementById("endframe").value;
+			// var startdate = document.getElementById("startdate").value;
+			var artist = ev.section_id;
+			// console.log(Project);
+			// console.log(Scope);
+			// console.log(Sequence);
+			// console.log(Task);
+			// console.log(Description);
+			// console.log(FMD);
+			// console.log(EMD);
+			// console.log(startframe);
+			// console.log(endframe);
+			// console.log(startdate);
+			// console.log(artist);
+			// ev.text = html("description").value;
+			// ev.custom1 = html("custom1").value;
+			// ev.custom2 = html("custom2").value;
+			// console.log('Inside Save');
+			myDict = {}
+			myDict.proj = Project;
+            myDict.scope = Scope;
+            myDict.seq = Sequence;
+            myDict.task = Task;
+            myDict.desc = Description;
+            myDict.fmd = FMD;
+            myDict.emd = EMD;
+            myDict.stframe = startframe
+            myDict.endframe = endframe;
+            console.log(myDict);
+			scheduler.endLightbox(true, html("my_form"));
+			var xhr=new XMLHttpRequest();
+        	xhr.open('POST','/updatescheduleradd1','true');
+        	xhr.onload = function (){
+        		console.log("SENDING");
+        	}
+        	xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	        var data = JSON.stringify(myDict);
+	        console.log(data);
+	        xhr.send(data);
+		}
+		function close_form() {
+			scheduler.endLightbox(false, html("my_form"));
+		}
+
+		function delete_event() {
+			var event_id = scheduler.getState().lightbox_id;
+			scheduler.endLightbox(false, html("my_form"));
+			// scheduler.deleteEvent(event_id);
+		}
+
+
+    var check = 0;
+
+	function setScaleConfig(value) {
+				var timeline = scheduler.matrix.timeline;
+    switch (value) {
+      case "1":
+        break;
+      case "2":
+  		check = 0;
+  		console.log(new Date());
+      break;
+      case "3":
+  		check =1; 
+      console.log(new Date());   
+      break;
+
+      case "4":
+      	
+    }
+  }
+	  </script>
+	  <script>
+		var scopes=['abin','antony','arvind'];		
+		autocomplete(document.getElementById("search"), scopes);
+	  function searchartist(){
+			var x = document.getElementById("search").value;
+			console.log(x);
+			var z = document.getElementById("searchautocomplete-list");
+			var c = document.getElementById("searchautocomplete-list").childElementCount;
+			console.log(c);
+			var i;
+			for(i = 0;i < c;i++)
+			{
+			var r = (z.childNodes[i].childNodes[1].textContent);
+			console.log(r);
+			}
+			}
+	  </script>	
+	
+	<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:87%;' >
+		<div class="dhx_cal_navline">
+			<!-- <div id="titletable"> -->
+				<br><br><br>
+				<table class="table" style="width:30%" >
+				    <thead>
+				        <tr >
+					        <th style="border: none;text-align: center;">Artist</th>
+					        <th style="border: none;text-align: center;">EMD</th>
+					        <th style="border: none;text-align: center;">CMD</th>
+				      	</tr>
+				    </thead>
+			    </table>
+			<form method='POST' action="">
+			<input value="{{st}},prev,{{duration}}" name="prev" style="display:none">
+			<div class="dhx_cal_prev_button" type="submit" ><button class="btn btn-success" style="font-size: 12px;padding: 5px;" type="submit">Prev</button></div>
+			</form>
+			<form method='POST' action="">
+			<input value="{{st}},next,{{duration}}" name="next" style="display:none">
+			<div class="dhx_cal_next_button"><button class="btn btn-success" style="font-size: 12px;padding: 5px;" type="submit">Next</button></div>
+			</form>
+			<form method='POST' action="">
+			<input value="{{st}},today,{{duration}}" name="today" style="display:none">
+			<div class="dhx_cal_today_button"><button class="btn" style="background-color: maroon;padding-bottom:4px;font-size: 15px;color: white;" type="submit">Today</button></div>
+			</form>
+			<div class="dhx_cal_date"></div>
+		</div>
+		<div class="dhx_cal_header">
+		</div>
+		<div class="dhx_cal_data">
+		</div>		
+	</div>
+</body></html>
