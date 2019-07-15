@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="../static/css/shot.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/all.min.css">
+    <link rel="stylesheet" href="../static/css/brands.min.css">
+    <link rel="stylesheet" href="../static/css/fontawesome.min.css">
+    <link rel="stylesheet" href="../static/css/regular.min.css">
+    <link rel="stylesheet" href="../static/css/solid.min.css">
+    <link rel="stylesheet" href="../static/css/svg-with-js.min.css">
+    <link rel="stylesheet" href="../static/css/v4-shims.min.css">
+    <link rel="stylesheet" href="../static/css/v4-shims.min.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.css">
+    <link rel="stylesheet" href="../static/css/jquery-ui.css">
+  <script  src="../static/js/all.min.js"></script>
+  <script  src="../static/js/brands.min.js"></script>
+  <script  src="../static/js/fontawesome.min.js"></script>
+  <script  src="../static/js/solid.min.js"></script>
+  <script  src="../static/js/regular.min.js"></script>
+  <script  src="../static/js/v4-shims.min.js"></script>
+  <script  src="../static/js/jquery.js"></script>
+  <script src="../static/js/jquery-1.12.4.min.js.download"></script>
+  <!-- <script src="../static/bootstrap.min.js.download"></script> -->
+  <!-- <script src="../static/jquery.dataTables.min.js.download"></script> -->
+  <!-- <script src="../static/dataTables.bootstrap4.min.js.download"></script> -->
+  <script type="text/javascript" src="../static/js/bootstrap-filestyle.js.download"> </script>
+  <script src="../static/js/jquery-ui.min.js.download"></script>
+<script>
+    function closemodal(){
+    $("#example").modal("hide");
+    console.log("Hello");
+    }
+    $(document).ready(function() {
+  $('#Task').multiselect({
+    nonSelectedText: 'Select Tasks'
+  });
+});
+    {%for b in task_dict%}
+    $(document).ready(function() {
+  $('#attach{{b['taskid']}}').multiselect({
+    nonSelectedText: 'Select Files'
+  });
+});
+    {%endfor%}
+</script>
+  <title>Shottrack</title>
+  <style type="text/css">
+    .btn-default {
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+}
+.modal .modal-footer {
+    background: #ecf0f1;
+    border-radius: 0 0 3px 3px;
+  }
+  .dtask {
+  margin : 0;
+  padding : 0;
+  width: 100%;
+  height: 23px;
+  background: fff;
+  border: solid 1px;
+  }
+  </style>
+  </head>
+
+  <body style="background: white; font-family: 'Varela Round', sans-serif;">
+
+   <div class="header" id="h">
+    <br><br>
+    <h1 id="first">
+    <span  class="icon"><i id="button1" class="fas fa-bars" onclick="openNav()"></i></span>
+    <b><span style="font-size: 50px;">Shotrack</span></b>
+    <div id="links">
+    <a href="#" class="btn btn-success" id="homebutton"><i class="fa fa-home" aria-hidden="true"></i><span>Home</span></a>
+    <a href="#" class="btn btn-info" id="notebutton"><i class="fa fa-list-alt" aria-hidden="true"></i><span>Notesfeed</span></a>
+    <a href="#" class="btn btn-warning" id="settingbutton" ><i class="fa fa-key" aria-hidden="true"></i><span>Settings</span></a>
+    <span><a class="btn btn-danger" href="#" id="logoutbutton"><i class="fa fa-user-times" aria-hidden="true"></i><span>Logout</span></a>
+    <input onkeyup="searchTable()" id="search" type="text" placeholder="Search"></span></h1>
+  </div>
+
+
+   </div>
+   <div id="container">
+  <div id="mySidebar" class="sidebar">
+  <button id="button2" onclick="addscope()">Import</button>
+  <div id="links">
+  <button id="button21" onclick="openform()" >form?</button>
+  
+  <button id="button22" onclick="openexcel()">excel?</button>
+  </div>
+  <form action="" method="POST">
+      <span>&nbsp;</span>
+  <input onkeyup="checkinput(event)" type="text" id="createscope" name="createscope" placeholder="Create Scope Category" style="color:#006bb3;">
+  <input type="text" id="categoryid2" name="categoryid2" placeholder="CategoryId2" style="display:none">
+      <br>
+  <button id="button4" type="submit" value="Submit" onclick="checkinput2(event)">Create</button>
+
+  </form>
+  
+ 
+
+  <ul id="myUL">
+
+
+  {%for i in scope_dict%}
+    {%if i['sc_id'] == 0%}
+      <li class="t1">&nbsp;&nbsp;&nbsp;<span class="caret"><i class="fa fa-chevron-circle-right "></i><span id="{{i['c_name']}}/"><span class="sname" id="{{i['c_id']}}/{{i['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i['c_name']}}</span></span></span>
+      <ul class="nested">
+    {%for i1 in scope_dict%}
+      {%if i1['sc_id'] == i['c_id']%}
+          <li id = "{{i1['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i1['c_name']}}" ></i><span id="{{i['c_name']}}/{{i1['c_name']}}/"><span class="sname" id="{{i1['c_id']}}/{{i1['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i1['c_name']}}</span></span></span>
+      <ul class="nested">
+      {%for i2 in scope_dict%}
+      {%if i2['sc_id'] == i1['c_id']%}
+        <script>
+        document.getElementById("{{i1['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+          <li id = "{{i2['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i2['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/"><span class="sname"  id="{{i2['c_id']}}/{{i2['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i2['c_name']}}</span></span></span>
+          <ul class="nested">
+      {%for i3 in scope_dict%}
+      {%if i3['sc_id'] == i2['c_id']%}
+              <script>
+        document.getElementById("{{i2['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+              <li id = "{{i3['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i3['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/"><span class="sname" id="{{i3['c_id']}}/{{i3['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i3['c_name']}}</span></span></span>
+            <ul class="nested">
+      {%for i4 in scope_dict%}
+      {%if i4['sc_id'] == i3['c_id']%}
+                <script>
+        document.getElementById("{{i3['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                <li id = "{{i4['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i4['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/"><span class="sname" id="{{i4['c_id']}}/{{i4['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i4['c_name']}}</span></span></span>
+                <ul class="nested">
+      {%for i5 in scope_dict%}
+      {%if i5['sc_id'] == i4['c_id']%}
+                    <script>
+        document.getElementById("{{i4['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                    <li id = "{{i5['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i5['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/{{i5['c_name']}}/"><span class="sname" id="{{i5['c_id']}}/{{i5['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i5['c_name']}}</span></span></span>
+                    <ul class="nested">
+      {%for i6 in scope_dict%}
+      {%if i6['sc_id'] == i5['c_id']%}
+                        <script>
+        document.getElementById("{{i5['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                        <li id = "{{i6['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i6['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/{{i5['c_name']}}/{{i6['c_name']}}/"><span class="sname" id="{{i6['c_id']}}/{{i6['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i6['c_name']}}</span></span></span>
+                        <ul class="nested">
+      {%for i7 in scope_dict%}
+      {%if i7['sc_id'] == i6['c_id']%}
+                            <script>
+        document.getElementById("{{i6['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                            <li id = "{{i7['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i7['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/{{i5['c_name']}}/{{i6['c_name']}}/{{i7['c_name']}}/"><span class="sname" id="{{i7['c_id']}}/{{i7['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i7['c_name']}}</span></span></span>
+                             <ul class="nested">
+      {%for i8 in scope_dict%}
+      {%if i8['sc_id'] == i7['c_id']%}
+                            <script>
+        document.getElementById("{{i7['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                       <li id = "{{i8['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i8['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/{{i5['c_name']}}/{{i6['c_name']}}/{{i7['c_name']}}/{{i8['c_name']}}/"><span class="sname" id="{{i8['c_id']}}/{{i8['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i8['c_name']}}</span></span></span>
+                       <ul class="nested">
+      {%for i9 in scope_dict%}
+      {%if i9['sc_id'] == i8['c_id']%}
+                            <script>
+        document.getElementById("{{i8['c_name']}}").className = "fa fa-chevron-circle-right";
+        </script>
+                       <li id = "{{i9['c_id']}}" class="t2" >&nbsp;&nbsp;&nbsp;<span class="caret"><i id = "{{i9['c_name']}}"></i><span  id="{{i['c_name']}}/{{i1['c_name']}}/{{i2['c_name']}}/{{i3['c_name']}}/{{i4['c_name']}}/{{i5['c_name']}}/{{i6['c_name']}}/{{i7['c_name']}}/{{i8['c_name']}}/{{i9['c_name']}}/"><span class="sname" id="{{i9['c_id']}}/{{i9['sc_id']}}" onclick = "searchTable3(this.innerHTML,this.id,this.parentNode.id)">{{i9['c_name']}}</span></span></span></li>
+                  {%endif%}
+                  {%endfor%}
+                           </ul>
+                      </li>
+                      {%endif%}
+                  {%endfor%}
+                                 </ul>
+                      </li>
+                      {%endif%}
+                  {%endfor%}
+                </ul>
+                      </li>
+                      {%endif%}
+                  {%endfor%}
+                </ul>
+                  </li>
+                  {%endif%}
+                  {%endfor%}
+                </ul>
+              </li>
+              {%endif%}
+    {%endfor%}
+      </ul>
+            </li>
+            {%endif%}
+    {%endfor%}
+      </ul>
+        </li>
+        {%endif%}
+    {%endfor%}
+      </ul>
+      </li>
+      {%endif%}
+    {%endfor%}
+      </ul>
+    </li>
+    {%endif%}
+   {%endfor%}
+</ul>
+
+</div>
+
+<div id="content">
+<div class ="table-responsive table-striped table-hover" style="position:fixed;overflow-y:scroll;height:100%;">
+  <table class="table" id="main">
+    <col width="8%">
+    <col width="11%">
+    <col width="13%">
+    <col width="15%">
+    <col width="12%">
+    <col width="10%">
+    <col width="25%">
+    <!--<col width="7%">-->
+    <col width="15%">
+    <thead style="">
+      <tr class="heading" id="myHeader border-bottom" style=" text-align:center;"> 
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Project</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Thumbnail</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Scope category</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Scope name</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Description</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">SAP</th>
+        <!--<th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Status</th> -->
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Task Detail</th>
+        <th style="background-color:white;color:#435d7d;border-right: solid 0.5px rgba(0,0,0,0.5);" class="sticky">Tasks</th>
+      </tr>
+    </thead>
+    
+    <tbody style="background-color:white;" id="main2">
+    {%for a in proj_dict%}
+      <tr class="{{a['c_id']}} mainrow" >
+        <td>{{a['proj_id']}}</td>
+        <td style="text-align: center;vertical-align: middle;"><img src="../static/tempfiles/{{a['thumbnail']}}" alt="No Thumbnail" height="78px" width="140px"></td>
+        <script type="text/javascript">
+          console.log("{{a['thumbnail']}}");
+        </script>
+        <td>{{a['category']}}</td>
+        <td>{{a['name']}}</td>
+        <td>{{a['description']}}</td>
+        <td>{{a['SAP']}}</td>
+       <!-- <td ><select name="status" id="sid{{a['scope_id']}}" onchange="status_change('sid{{a['scope_id']}}','{{a['scope_id']}}')">
+        <option value="{{a['status']}}">{{a['status']}}</option>
+          {%for  s in ['YTS', 'ASSIGNED', 'INPROGRESS', 'REVIEW', 'APPROVED', 'CLIENT_HOLD', 'HOLD', 'REMOVED', 'CLIENT_REVIEW', 'IMPROVISE', 'CLIENT_IMPROVISE', 'CLIENT_APPROVED']%}
+          {%if s != a['status']%}
+          <option value={{s}}>{{s}}</option>
+          {%endif%}
+          {%endfor%}
+  </select></td> -->
+         <td>           
+          <table>
+          <tbody>
+          <tr>
+          {%for b in unique_list%}
+            {%if a['scope_id'] == b[0]%}
+              <td style="border:none;"><span  class="dropbtn1" style="cursor: pointer;">{{b[1]}}&nbsp;&nbsp;&nbsp;<span id="{{a['scope_id']}}/{{b[1]}}" style="color:red"><i class="fa fa-circle"></i></span></span>
+              <div class="dropdown-content1 tasksummary" style="right:6%;">
+              <table style="width: 100%;">
+              <tbody>
+              {%for b1 in task_dict%}
+                {%if b[1] == b1['task'] and b[0] == b1['scope_id']%}
+                  <tr>
+                    {% if b1['thumb'] %}
+                    <td  style="border:none;"><img src="../static/tempfiles/{{b1['thumb']}}" alt="No Thumbnail" height="25px" width="44px"></td>
+                    {% else %}
+                    <td  style="border:none;"><img src="../static/tempfiles/default.jpg" alt="No Thumbnail" height="25px" width="44px"></td>
+                    {% endif %}
+                    <td  style="border:none;">{{b1['task']}}</td>
+                    <td  style="border:none;">{{b1['assigned']}}</td> 
+                    <!-- <td  style="border:none;">{{b1['status']}}</td> -->
+                    {% if b1['intversion']%} 
+                    <td  style="border:none;"><a href="#attachView{{b1['taskid']}}" class="notes" data-toggle="modal"><button class="btn btn-info" style="font-size: 10px;padding: 3px;">{{b1['intversion']}}</button></a></td>
+                    <script>
+                      document.getElementById("{{a['scope_id']}}/{{b[1]}}").style.color = "green";
+                      // console.log(style);
+                    </script>
+                    {% else %}
+                    <td style="border:none;">{{b1['intversion']}}</td>
+                   <!--  <script>
+                      document.getElementById("{{a['scope_id']}}/{{b[1]}}").style.color = "red";
+                      // console.log(style);
+                    </script> -->
+                    {%endif%} 
+                    <td  style="border:none;"><a href="#notesView{{b1['taskid']}}" class="notes" data-toggle="modal"><span style="color: rgb(67, 93, 125);padding-left:10px;font-size: 13px;"><i  class="fas fa-list-alt"></i></span></a>
+                    <span class="addnotes" id = "{{a['category']}}-{{a['name']}}-{{b1['task']}}-{{b1['assigned']}}-{{b1['intversion']}}"style="color: rgb(242, 145, 13);font-size: 10px;" onclick="opennotesadd(this.id)"><i  class="fas fa-plus-circle"></i></span>
+                    </td>
+                   </tr>     
+                {%endif%}
+              {%endfor%}
+              </tbody>
+              </table>
+              </div>
+            </td>
+            {%endif%}
+          {%endfor%}
+          </tr>
+          </tbody>
+          </table>
+         </td>
+        <td><span  class="dropbtn"><i id="taskicon" class="fas fa-cogs"></i></span>
+          <div class="dropdown-content">
+    <table class="table table-striped taskbox table-hover" style="overflow-y:scroll;">
+    <col width="10%">
+    <col width="10%">
+    <col width="10%">
+    <col width="8%">
+    <col width="8%">
+    <col width="10%">
+    <col width="12%">
+    <col width="12%">
+    <col width="8%">
+    <col width="10%">
+    <thead>
+    <tr class="heading border-bottom">
+    <th>scope</th>
+    <th>task</th>
+    <th>assigned</th>
+    <th>emd</th>
+    <th>cmd</th>
+    <th>startframe</th>
+    <th>endframe</th>
+    <th>status</th>
+    <th>latest int version</th>
+    <th>latest client version</th>
+    <th>start</th>
+    <th>due</th>
+    <th>notes</th>
+  </tr>
+  </thead>
+       <tbody>
+       <tr id="{{a['name']}}_task" ><td colspan="2"><b>No task available.<span onclick="opentaskbuttons()" id="addlink"><u>Add</u></span>tasks?</b></td></tr>
+      {%for b in task_dict%}
+      {%if a['scope_id'] == b['scope_id']%}
+      <script>
+        var x = document.getElementById("{{a['name']}}_task");
+        x.style.display = "none";
+      </script>
+  <tr>
+    <td>{{a['name']}}</td>
+    <td>{{b['task']}}</td>
+    <td>{{b['assigned']}}</td>
+    <td>{{b['emd']}}</td>
+    <td>{{b['cmd']}}</td>
+    <td>{{b['startframe']}}</td>
+    <td>{{b['endframe']}}</td>
+    <!-- <td>{{b['status']}}</td> -->
+    <td ><select name="status" id="sid{{a['scope_id']}}" onchange="status_change('sid{{a['scope_id']}}','{{b['taskid']}}')">
+        <option value="{{b['status']}}">{{b['status']}}</option>
+          {%for  s in ['YTS', 'Assigned', 'TL_Approved', 'TL_kickback', 'Sup_Approved', 'Sup_Kickback', 'Sup_Review', 'Stage_3_Kickback', 'VFX_Sup_Approved', 'VFX_Sup_Kickback', 'CG_Sup_Approved', 'CG_Sup_Kickback', 'Art_Review', 'Art_Dir_Approved', 'Art_Dir_Kickback', 'Client_Review', 'Client_Approved', 'Client_Kickback', 'WIP', 'HOLD', 'PAUSE', 'Ready_for_comp', 'Ready_for_matte', 'REVIEW', 'Improvise', 'Stage_3_Approved', 'Reassigned', 'VFX_Sup_Review', 'Art_Dir_Review', 'VFX_Head_Review', 'CG_Sup_Review']%}
+          {%if s != b['status']%}
+          <option value={{s}}>{{s}}</option>
+          {%endif%}
+          {%endfor%}
+  </select></td>
+    <td>{{b['intversion']}}</td>
+    <td>{{b['clientversion']}}</td>
+    <td>{{b['start']}}</td>
+    <td>{{b['due']}}</td>
+    <!-- <td>{{b['notes']}}</td> -->
+    <td><!-- <span  class="dropbtn1" style="font-size: 2rem;margin-left: 2rem;"><i  class="fas fa-list-alt"></i></span>
+          <div class="dropdown-content1">
+              {%if b['notes'] == 'No notes'%}
+              <script>console.log("No Notes");</script>
+              <p style="color:#435d7d;font-size: 15px;text-align: center;">&nbsp;&nbsp;No notes&nbsp;&nbsp;</p>
+              {%else%}
+              <ol>
+              {%for note in b['notes']%}
+              <li style="color:#435d7d;font-size: 15px;"><span style="color: rgb(242, 145, 13);">{{note[1]}} : </span>{{note[0]}} ( {{note[2]}} )&nbsp;&nbsp;</li>
+              {%endfor%}
+              </ol>
+              {%endif%}
+  </div> -->
+  
+  <a href="#notesView{{b['taskid']}}" class="notes" data-toggle="modal"><span style="color: rgb(67, 93, 125);padding-left:0px;font-size: 15px;"><i  class="fas fa-list-alt"></i></span></a>
+  
+</td>
+  </tr>
+      {%endif%}
+      {%endfor%}
+       </tbody>
+  </table>
+            <span><button class="button3" onclick="opentaskbuttons()">add +</button></span>
+            <span><button id="{{a['proj_id']}}-{{a['category']}}-{{a['name']}}" class="taskformbutton" onclick="opentaskform(this.id)" >form?</button></span>
+            <span><button class="taskexcelbutton" onclick="opentaskexcel()">excel?</button></span>
+  </div>
+        </td>
+      </tr>
+   {%endfor%}
+    </tbody>
+
+  </table>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <div id = "demo" style="margin-left:35%;display:none">
+           <br><br><h2 >No results found</h2>
+           <span style="color:red;cursor: pointer;" onclick="location.reload(true)"><h3>&nbsp;&nbsp;<u>Reload Shottrack</u></h3></span>
+       </div>
+</div>
+</div>
+   </div>
+<!-- Modal -->
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color:#f2910d;">Status</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+
+                    <li style="color:#1e39ea;"><i class = "fa fa-chevron-circle-right"></i>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<div  class="modal fade" id="addtaskexcelmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2"><b>SELECT FILE</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+      <div class="container">
+<form action=""  method = "POST" enctype="multipart/form-data">
+<input type="file" name="taskexcel" id="excel">
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button submit" value="Submit" class="btn btn-primary">Upload</button>
+          </form>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div  class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"><b>ADD SCOPE PROPERTIES</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+  <form action=""  method = "POST">
+      <br>
+    <input type="text" id="scategory" name="scategory" placeholder="Scope Category" style="color:#006bb3;" readonly>
+
+<br>
+      <br>
+    <!--<input type="text" id="sname" name="scopename" placeholder="Scope Name" style="color:#006bb3; required" hidden>-->
+     <label for="thumbnail" style="color:#006bb3;">Pipeline Code &nbsp &nbsp</label><select name = 'pipecode' id="pipcode"><option value="PFXPL">PFXPL</option><option value="ASSET">ASSET</option><option value="2D Asset">2D ASSET</option><option value="model">MODEL</option><option value="previz_asset">PREVIZ_ASSET</option>
+      <option value="PAINTPL">PAINTPL</option><option value="ROTOPL">ROTOPL</option>
+      </select>
+<br>
+
+      <br>
+    <input type="text" id="keyword" name="keyword" placeholder="Keyword" style="color:#006bb3; required">
+<br>
+
+      <br>
+       <label for="thumbnail" style="color:#006bb3;">Thumbnail</label>
+      <br>
+    <input id ="thumbnail" type="file" name="scopeattach">
+<br>
+
+      <br>
+    <input type="text" id="frames" name="frames" placeholder="Frames" style="color:#006bb3;">
+<br>
+
+
+      <br>
+    <textarea id="sap" name="sap" placeholder="SAP" style="height:200px;color:#006bb3;"></textarea>
+<br>
+
+      <br>
+    <textarea id="desc" name="desc" placeholder="Description" style="height:200px;color:#006bb3;"></textarea>
+     <input type="text" id="categoryid" name="categoryid" placeholder="CategoryId" style="display:none" >
+</div>
+      </div>
+      <div class="modal-footer">
+          <button type="button submit" value="Submit" class="btn btn-primary" onclick="checkinput4()">Commit</button>
+   </form>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+   </div>
+<div  class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2"><b>SELECT FILE</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+<form action=""  method = "POST" enctype="multipart/form-data">
+<input type="file" name="excel" id="excel">
+</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button submit" value="Submit" class="btn btn-primary">Upload</button>
+          </form>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div  class="modal fade" id="addtaskformmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content" id="contentfortaskform">
+
+
+
+      <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel2"><b>ADD TASK PROPERTIES</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+
+
+
+      <div class="modal-body">
+        <div class="container">
+  <form action=""  method = "POST">
+      <br>
+    <label for="Project" class="label"><b>Project</b></label>&nbsp;&nbsp;&nbsp;&nbsp;
+    <input  type="text" id="Project" name="Project" placeholder="Project" style="color:#006bb3;width:100%"required>
+<br><br>
+    <label for="Subscope" class="label"><b>Subscope</b></label>&nbsp;&nbsp;
+    <input type="text" id="Subscope" name="Subscope" placeholder="Subscope" style="color:#006bb3;width:100%"required>
+<br><br>
+    <label for="Scope" class="label"><b>Scope</b></label>&nbsp;&nbsp;
+    <input type="text" id="Scope" name="Scope" placeholder="Scope" style="color:#006bb3;width:100%"required>
+<br><br>
+    <label for="Task" class="label"><b>Task</b></label>&nbsp;&nbsp;
+    <br>
+    <select type="text" class="multiselect" multiple="multiple" role="multiselect" id="Task" name="Task" style="width: 100%;" onchange="checkvalues()" required>
+    <option value="ROT">ROT</option>
+    <option value="2D Element">2D Element</option>
+    <option value="Paint">Paint</option>
+    <option value="Mattepaint">Mattepaint</option>
+    <option value="Concept Art">Concept Art</option>
+    <option value="2D Layout">2D Layout</option>
+    <option value="Slapcomp">Slapcomp</option>
+    <option value="Precomp">Precomp</option>
+    <option value="Comp">Comp</option>
+    <option value="2D Test">2D Test</option>
+    <option value="MatchMove">MatchMove</option>
+    <option value="Texturing">Texturing</option>
+    <option value="Shading">Shading</option>
+    <option value="Rigging">Rigging</option>
+    <option value="3D Animation">3D Animation</option>
+    <option value="ShotSculpt">ShotSculpt</option>
+    <option value="Dynamics">Dynamics</option>
+    <option value="Model">Model</option>
+    <option value="Lighting">Lighting</option>
+    <option value="3D Test">3D Test</option>
+    <option value="LookDev">LookDev</option>
+    <option value="HDRI">HDRI</option>
+    <option value="3D Layout">3D Layout</option>
+    <option value="Previz">Previz</option>
+    <option value="Pipe Test">Pipe Test</option>
+    <option value="Pipe Out">Pipe Out</option>
+    </select>
+<br><br>
+<div id="singletask" style="display: none">
+  <label for="Description" class="label"><b>Description</b></label>&nbsp;&nbsp;
+    <input type="text" id="Description" name="Description" placeholder="Description" style="color:#006bb3;width:100%" required>
+<br><br>
+  <label for="FMD" class="label"><b>FMD</b></label>&nbsp;&nbsp;
+    <input type="text" id="FMD" name="FMD" placeholder="FMD" style="color:#006bb3;width:100%" required>
+<br><br>
+  <label for="startframe" class="label"><b>Startframe</b></label>&nbsp;&nbsp;
+    <input type="text" id="startframe" name="startframe" placeholder="Startframe" style="color:#006bb3;width:100%" required>
+<br><br>
+  <label for="endframe" class="label"><b>Endframe</b></label>&nbsp;&nbsp;
+    <input type="text" id="endframe" name="endframe" placeholder="Endframe" style="color:#006bb3;width:100%" required>
+<br><br>
+<label for="startdate" class="label"><b>Bidstart</b></label>&nbsp;&nbsp;<br>
+<input type="date" id="startdate" name="startdate" style="color:#006bb3;width:80%" required>
+</div>
+    <input type='text' id='Taskslength' name='Taskslength' style="color:#006bb3;width:80%;display: none;" required>
+<div id="Tableform" value="0">
+  <table class="table table-bordered" id="Tableformtable">
+    <thead>
+      <tr>
+        <th>Project</th>
+        <th>Subscope</th>
+        <th>Scope</th>
+        <th>Task</th>
+        <th>Description</th>
+        <th>FMD</th>
+        <th>Start Frame</th>
+        <th>End Frame</th>
+        <th>Bid Start</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
+<br>
+      <div class="modal-footer">
+        <button id="Next" style="display:none" type="button" class="btn btn-primary" onclick="openTableForm()"><span>Next</span></button>
+        <button id="Commit" type="button submit" value="Submit" class="btn btn-primary"><span >Commit</span></button>
+        </form>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="location.reload(true)">Cancel</button>
+      </div>
+  </div>
+  </div>
+</div>
+
+{%for b in task_dict%}
+<div id="notesView{{b['taskid']}}" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header" style="background-color:rgb(86, 103, 135); ">
+            <h4 class="modal-title" style="color: white;font-size: 18px;font-family: "Varela Round", sans-serif;">Notes</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          </div>
+                    <div class="modal-body">
+                      {%if b['notes'] != []%}
+                        <div class="panel-group" id="accordion">
+                        {%for note in b['notes']%}
+                      <div class="panel panel-default" style="border:1px solid rgb(221, 221, 221);border-radius: 4px;border-bottom: none;">
+                        <div class="panel-heading" style="background-color: rgb(245, 245, 245);padding: 8px 5px 3px 5px;border-bottom:1px solid rgb(221, 221, 221); ">
+                          <h4 class="panel-title" style="font-size: 16px;">          
+                            <a data-toggle="collapse" data-parent="#accordion" href="#{{b['taskid']}}collapse{{note[0][2]}}">
+                            <span style="color: rgb(51, 51, 51);font-size: 16px;">{{note[0][2]}}</span></a>
+                          </h4>
+                        </div>
+                        <div id="{{b['taskid']}}collapse{{note[0][2]}}" class="panel-collapse collapse" style="box-sizing: border-box;font-size: 13px;">
+                            {%for subnote in note%}       
+                            <div class="panel-body" style="color: rgb(86, 103, 135);font-size: 13px;padding: 3px;"><span style="color: rgb(86, 103, 135);"><b>{{subnote[1]}}</b></span> says<br>{{subnote[0]}}
+                              {%if subnote[4] != ""%}
+                              <br><a href="../static/tempfiles/{{subnote[4]}}" download>Attachment</a>
+                              {%endif%}
+                              </div>                            
+                            <hr>
+                            {%endfor%}                     
+                        </div>
+                      </div>
+                      <br>
+                      {%endfor%}
+                        </div>
+                         {%endif%}
+                      </div>         
+          <div class="modal-footer">
+            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel">
+            <!--<input type="submit" class="btn btn-info" value="Save">-->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{%endfor%}
+
+
+{%for b in task_dict%}
+<div id="attachView{{b['taskid']}}" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form>
+          <div class="modal-header" style="background-color: rgb(86, 103, 135);">
+            <h4 class="modal-title" style="color: white;font-size: 18px;font-family: 'Varela Round', sans-serif;text-align: center">Files</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="color:white">×</button>
+          </div>
+                    <div class="modal-body">
+                      {%if b['attach'] != []%}
+                        <div class="panel-group" id="accordion">
+                        {%for attach in b['attach']%}
+                        {%for a in attach%}
+                          <span style="font-size:10px;color: #435d7d;">&nbsp;&nbsp;&nbsp;{{a[3]}}</span>
+                          <span id="attach{{b['taskid']}}{{a[1]}}-copy" class="btn btn-warning" style="font-size: 7px;padding: 3px;cursor: pointer;" onclick="copytext(this.id)">Copy</span>
+                          {%if a[2] != ""%}
+                         <!--  <video width="320" height="240" controls>
+                            <source src="../static/tempfiles/{{a[2]}}">
+                          </video> -->
+                          <a href='../static/tempfiles/{{a[2]}}' download><span class="btn btn-primary" style="font-size: 7px;padding: 3px">Download</span></a>
+                          {%endif%}
+                          <input style="width:0;color:rgb(0,0,0,0);border:none;" type="text" value="{{a[1]}}" id="attach{{b['taskid']}}{{a[1]}}"></input>                         
+                          <hr>
+                        {%endfor%}
+                      <br>
+                      {%endfor%}
+                        </div>
+                         {%endif%}
+                      </div>         
+          <div class="modal-footer">
+            <!-- <input id="attach{{b['taskid']}}-download" type="button" class="btn btn-info" value="Download" onclick="downloadfiles(this.id)"> -->
+            <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel">
+            <!--<input type="submit" class="btn btn-info" value="Save">-->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{%endfor%}
+
+
+<div  class="modal fade" id="addnotesmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content" id="contentfortaskform">
+      <div class="modal-header" style="background-color: rgb(86, 103, 135);">
+          <h5 class="modal-title" id="exampleModalLabel2" style="color: white;font-size: 18px;font-family: 'Varela Round', sans-serif;text-align: center"><b>ADD NOTES</b></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+  <form action=""  method = "POST">
+      <br>
+    <div style="display:none">
+    <label for="Scopenotes" class="label"><b>Scope</b></label>&nbsp;&nbsp;   
+    <input type="text" id="Scopenotes" name="Scopenotes" placeholder="Scope" style="color:#006bb3;width:100%"required>
+<br><br>
+<label for="Tasknotes" class="label"><b>Task</b></label>&nbsp;&nbsp;   
+    <input type="text" id="Tasknotes" name="Tasknotes" placeholder="Task" style="color:#006bb3;width:100%"required>
+<br><br>
+<label for="Assignednotes" class="label"><b>Assigned</b></label>&nbsp;&nbsp;   
+    <input type="text" id="Assignednotes" name="Assignednotes" placeholder="Assigned" style="color:#006bb3;width:100%"required>
+<br><br>
+<label for="INTVersionnotes" class="label"><b>INT Version</b></label>&nbsp;&nbsp;   
+    <input type="text" id="INTVersionnotes" name="INTVersionnotes" placeholder="INT Version" style="color:#006bb3;width:100%"required>
+<br><br>
+</div>
+<label for="Notes" class="label"><b>Notes</b></label>&nbsp;&nbsp;   
+    <textarea id="Notes" name="Notes" placeholder="Notes" style="color:#006bb3;width:100%"required></textarea>
+<br><br>
+<label for="Attachment" class="label"><b>Attachment</b></label>&nbsp;&nbsp; 
+<br>  
+    <input id ="Attachment" type="file" name="Attachment">
+</div>
+<br>     
+      <div class="modal-footer">
+        <button id="Next" style="display:none" type="button" class="btn btn-primary" onclick="openTableForm()"><span>Next</span></button>
+        <button id="Commit" type="button submit" value="Submit" class="btn btn-primary"><span >Commit</span></button>
+        </form>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="location.reload(true)">Cancel</button>
+      </div>
+  </div>
+  </div>
+</div>
+
+
+
+  <script type="text/javascript" src="../static/js/new1.js"></script>
+  <script type="text/javascript" src="../static/js/new2.js"></script>
+  <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../static/js/select.js"></script>
+  <script type="text/javascript" src="../static/js/auto.js"></script>
+<script>
+window.onscroll = function() {
+scrollsticky()
+};
+var head = document.getElementById("main");
+var sticky = main.offsetTop;
+var button = document.getElementById("button4");
+var s = document.getElementById("button4").offsetTop;
+// console.log(s);
+
+</script>
+   <script>
+var toggler = document.getElementsByClassName("caret");
+var i;
+for (i = 0; i < toggler.length; i++) {
+  toggler[i].addEventListener("click", function() {
+    this.parentElement.querySelector(".nested").classList.toggle("active");
+  })};
+
+
+var toggler2 = document.getElementsByClassName("dropbtn");
+var j;
+for (j = 0; j < toggler2.length; j++) {
+  toggler2[j].addEventListener("click", function() {
+    this.parentElement.querySelector(".dropdown-content").classList.toggle("active1");
+  })};
+
+var toggler3 = document.getElementsByClassName("dropbtn1");
+for (j = 0; j < toggler3.length; j++) {
+  toggler3[j].addEventListener("click", function() {
+    this.parentElement.querySelector(".dropdown-content1").classList.toggle("active2");
+    this.parentElement.classList.toggle("highlight");
+    console.log(this.parentElement.classList)
+    console.log("HELLO");
+  })};
+
+
+
+function searchTable() {
+  var input, filter, table, tr, td, i,txtValue,td2,txtValue2,td3,txtValue3;
+  input = document.getElementById("search");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("main");
+  // tr = table.getElementsByTagName("tr");
+  tr = table.getElementsByClassName("mainrow");
+  for (i = 0; i < tr.length; i++) {
+
+    td = tr[i].getElementsByTagName("td")[2];
+    td2 = tr[i].getElementsByTagName("td")[3];
+    td3 = tr[i].getElementsByTagName("td")[6];
+    if (td||td2||td3) {
+      txtValue = td.textContent || td.innerText;
+      txtValue2 = td2.textContent || td2.innerText;
+      txtValue3 = td3.textContent || td3.innerText;
+      if ((txtValue.toUpperCase().indexOf(filter) > -1) || (txtValue2.toUpperCase().indexOf(filter) > -1) || (txtValue3.toUpperCase().indexOf(filter) > -1)) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
+<script>
+    function searchTable3(x,id = 5,id2 = 0) {
+    console.log(x);
+    console.log(id);
+    console.log(id2);
+    var toggler = document.getElementsByClassName("sname");
+    var j;
+    for (j = 0; j < toggler.length; j++) {
+    if(toggler[j].style.color == "rgb(242, 145, 13)")
+    {
+    toggler[j].style.color = "";
+    }
+    }
+    document.getElementById(id).style.color = "#f2910d";
+    document.getElementById("scategory").value = id2;
+    document.getElementById("categoryid").value = id;
+    document.getElementById("categoryid2").value = id;
+    document.getElementById("main").style.display = null;
+  var input, filter, table, tr, td, i,txtValue,td2,txtValue2,td3,txtValue3;
+  var check = 0;
+  input = x;
+  filter = input.toUpperCase();
+  table = document.getElementById("main");
+  tr = table.getElementsByClassName("mainrow");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[2];
+    td2 = tr[i].getElementsByTagName("td")[3];
+    if (td||td2) {
+      txtValue = td.textContent || td.innerText;
+      txtValue2 = td2.textContent || td2.innerText;
+      if ((txtValue.toUpperCase().indexOf(filter) > -1) || (txtValue2.toUpperCase().indexOf(filter) > -1)){
+        tr[i].style.display = "";
+       check++;
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+  if(check == 0)
+  {document.getElementById("demo").style.display = null;
+  document.getElementById("main").style.display = "none";}
+  else
+  document.getElementById("demo").style.display = "none";
+}
+</script>
+  <script>
+      function filter(){
+      pcheck();
+      tcheck();
+      var scope=document.getElementById("s").value;
+
+        var params={pNames : project,
+        sNames : scope,
+        tNames : type};
+
+        var xhr=new XMLHttpRequest();
+        xhr.open('POST','/note','true');
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        var data = JSON.stringify(params)
+
+        xhr.send(data);
+          }
+          function pcheck()
+          {
+          var x=document.getElementById("p");
+      var project=[];
+      var j=0;
+      for (var i = 0; i < x.options.length; i++) {
+         if(x.options[i].selected == true){
+              project[j]=x.options[i].value;
+
+              j++;
+          }
+      }
+      if(project[0]=="multiselect-all")
+      project.shift();
+          }
+          function tcheck()
+          {
+
+      j=0;
+      var y=document.getElementById("t");
+      var type=[];
+      for (var i = 0; i < y.options.length; i++) {
+         if(y.options[i].selected == true){
+              type[j]=y.options[i].value;
+
+              j++;
+          }
+      }
+      if(type[0]=="multiselect-all")
+      type.shift();
+          }
+      function openNav() {
+  document.getElementById("button1").className="fas fa-times";
+  document.getElementById("mySidebar").style.width = "300px";
+  document.getElementById("content").style.marginLeft = "300px";
+  document.getElementById("main").style.width = "83%";
+  var taskaddbuttons = document.getElementsByClassName("button3");
+  for(i=0;i<taskaddbuttons.length;i++){
+    console.log("HELLO",taskaddbuttons[i].style.right);
+    taskaddbuttons[i].style.right = "20%"; 
+  }
+  var taskformbuttons = document.getElementsByClassName("taskformbutton");
+  for(i=0;i<taskformbuttons.length;i++){
+    console.log("HELLO",taskformbuttons[i].style.right);
+    taskformbuttons[i].style.right = "25%"; 
+  }
+  var taskexcelbuttons = document.getElementsByClassName("taskexcelbutton");
+  for(i=0;i<taskexcelbuttons.length;i++){
+    console.log("HELLO",taskexcelbuttons[i].style.right);
+    taskexcelbuttons[i].style.right = "20%"; 
+  }
+  var taskbox = document.getElementsByClassName("taskbox");
+  var i;
+  for(i=0;i<taskbox.length;i++)
+  {
+  taskbox[i].style.width = "80%";
+  }
+  var tasksummary = document.getElementsByClassName("tasksummary");
+  for(i=0;i<tasksummary.length;i++)
+  {
+  tasksummary[i].style.right = "22.3%";
+  tasksummary[i].style.width = "20.7%";
+  }
+
+  var buttonAdd = document.getElementsByClassName("addTask");
+  var j;
+
+  for(j=0 ; j<buttonAdd.length ; j++)
+  {
+
+  buttonAdd[j].style.right = "20%";
+  }
+  document.getElementById("button1").onclick=closeNav;
+  document.getElementById("button2").style.display = "block";
+  var elem = document.getElementById("button2");
+  var pos = 0;
+  var id = setInterval(frame, 0.1);
+  function frame() {
+    if (pos == 75) {
+      clearInterval(id);
+    } else {
+      pos = pos + 5;
+      elem.style.width = pos + "px";
+      elem.style.height = pos - 30 + "px " ;
+    }
+  }
+}
+function closeNav() {
+  document.getElementById("button1").className="fas fa-bars";
+  document.getElementById("mySidebar").style.width = 0;
+  document.getElementById("content").style.marginLeft = 0;
+  document.getElementById("main").style.width = "100%";
+  var taskaddbuttons = document.getElementsByClassName("button3");
+  for(i=0;i<taskaddbuttons.length;i++){
+    console.log("HELLO",taskaddbuttons[i].style.right);
+    taskaddbuttons[i].style.right = "0"; 
+  }
+  var taskformbuttons = document.getElementsByClassName("taskformbutton");
+  for(i=0;i<taskformbuttons.length;i++){
+    console.log("HELLO",taskformbuttons[i].style.right);
+    taskformbuttons[i].style.right = "6%"; 
+  }
+  var taskexcelbuttons = document.getElementsByClassName("taskexcelbutton");
+  for(i=0;i<taskexcelbuttons.length;i++){
+    console.log("HELLO",taskexcelbuttons[i].style.right);
+    taskexcelbuttons[i].style.right = "1%"; 
+  }
+  var taskbox = document.getElementsByClassName("taskbox");
+  var i;
+  for(i=0;i<taskbox.length;i++)
+  {
+  taskbox[i].style.width = "100%"
+  }
+  var tasksummary = document.getElementsByClassName("dropdown-content1");
+  for(i=0;i<tasksummary.length;i++)
+  {
+  
+  }
+  var buttonAdd = document.getElementsByClassName("addTask");
+  var j;
+  var tasksummary = document.getElementsByClassName("tasksummary");
+  for(i=0;i<tasksummary.length;i++)
+  {
+  tasksummary[i].style.right = "6%";
+  tasksummary[i].style.width = "25%";
+  }
+  for(j=0 ; j<buttonAdd.length ; j++)
+  {
+  buttonAdd[j].style.right = null;
+  }
+  document.getElementById("button1").onclick=openNav;
+  document.getElementById("button2").style.display = "none" ;
+}
+(function(window){
+  var supportPageOffset = window.pageXOffset !== undefined;
+  var isCSS1Compat = ((document.compatMode || "") === "CSS1Compat");
+  var demoItem3 = document.getElementById("button2");
+  window.addEventListener("scroll", function(e) {
+    var x = supportPageOffset ? window.pageXOffset : isCSS1Compat ? document.documentElement.scrollLeft : document.body.scrollLeft;
+var y = supportPageOffset ? window.pageYOffset : isCSS1Compat ? document.documentElement.scrollTop : document.body.scrollTop;
+    button2.style.top = -y + 130 + "px";
+  });
+})(window);
+  </script>
+<script>
+    function addscope(){
+    document.getElementById("button2").style.display = "none" ;
+    document.getElementById("button21").style.display = "block" ;
+    document.getElementById("button22").style.display = "block" ;
+    }
+</script>
+<script>
+    function openexcel(){
+               $('#exampleModal2').modal('show');
+              }
+</script>
+<script>
+    function openform(){
+    var y = document.getElementById("scategory").value;
+              if(!y){
+              alert("Select a scope category!");
+              var z = document.getElementById("button21").dataset.target;
+              }
+              else
+               $('#exampleModal').modal('show');
+
+              }
+
+</script>
+  <script>
+      function redo()
+      {
+      document.getElementById("browse").style.display = "none" ;
+      }
+  </script>
+<script>
+    function checkinput(event)
+    {
+    if(!document.getElementById("categoryid2").value){
+    if(event.keyCode == 8)
+    console.log("Hello2");
+    else{
+    alert("Select a scope category!");
+    console.log("Hello");
+    }
+    }
+    }
+</script>
+  <script>
+      $(document).ready(function() {
+    var messages = "{{ get_flashed_messages() }}";
+
+    if (typeof messages != 'undefined' && messages != '[]') {
+        $("#myModal").modal();
+    };
+});
+  </script>
+<script>
+    function checkinput2(event){
+    if(!document.getElementById("createscope").value){
+    alert('Select a scope category!');
+    event.preventDefault();
+    }
+    else
+    alert('You have successfully created a scope!');
+    }
+</script>
+  <script>
+    function checkinput3(){
+    if(!document.getElementById("excel").value)
+    alert('You have not uploaded any file!');
+    else
+    alert('You have successfully upload the file!');
+    }
+</script>
+  <script>
+    function checkinput4(){
+    if(!document.getElementById("sname").value)
+    alert('You have not nothing to commit!');
+    else
+    alert('You have successfully committed!');
+    }
+</script>
+
+
+<!-- task creation forms and functions -->
+<script type="text/javascript">
+  function opentaskbuttons(){
+    // console.log("HEllo");
+    var addtaskbuttons = document.getElementsByClassName("button3");
+    var addtaskforms = document.getElementsByClassName("taskformbutton");
+    var addtaskexcel = document.getElementsByClassName("taskexcelbutton");
+    var i;
+    for(i=0 ; i<addtaskbuttons.length ; i++){
+      addtaskbuttons[i].style.display = "none";
+      addtaskforms[i].style.display = "block";
+      addtaskexcel[i].style.display = "block";
+    }
+    
+  }
+  function opentaskform(x){
+    $('#addtaskformmodal').modal('show');
+    // console.log(x);
+    var res = x.split("-");
+    document.getElementById("Project").value = res[0];
+    document.getElementById("Subscope").value = res[1];
+    document.getElementById("Scope").value = res[2];
+    }
+  function opentaskexcel(){
+    $('#addtaskexcelmodal').modal('show');
+  }
+</script>
+<!-- check the no of values of the select input -->
+<script>
+  function checkvalues(){
+    var x=document.getElementById("Task");
+    var tasks=[];
+    var j=0;
+      for (var i = 0; i < x.options.length; i++) {
+         if(x.options[i].selected == true){
+              tasks[j]=x.options[i].value;
+              // console.log(tasks[j]);
+              j++;
+          }
+      }
+      // console.log(tasks.options.length);
+      document.getElementById("Taskslength").value = tasks.length;
+      // console.log(document.getElementById("Taskslength").value);
+      if(tasks.length == 1){
+        document.getElementById("singletask").style.display = "block";
+      }
+      if(tasks.length != 1){
+        document.getElementById("singletask").style.display = "none";
+      }
+      if(tasks.length > 1){
+        document.getElementById("Next").style.display = "block";
+        document.getElementById("Commit").style.display = "none";
+      }
+      if(tasks.length < 2){
+        document.getElementById("Next").style.display = "none";
+        document.getElementById("Commit").style.display = "block";
+      }
+      if(tasks[0]=="multiselect-all")
+      tasks.shift();
+  }
+</script>  
+<script>
+  function openTableForm(){
+    document.getElementById("Next").style.display = "none";
+    document.getElementById("Commit").style.display = "block";
+    // console.log("Hello Table");
+    document.getElementById("Tableform").style.display = "block";
+    var table = document.getElementById("Tableformtable");
+    var x=document.getElementById("Task");
+    var tasks=[];
+    var j=0;
+      for (var i = 0; i < x.options.length; i++) {
+         if(x.options[i].selected == true){
+              tasks[j]=x.options[i].value;
+              // console.log(tasks[j]);
+              j++;
+          }
+      }
+    document.getElementById("Description").required = false;
+    document.getElementById("FMD").required = false;
+    document.getElementById("startdate").required = false;
+    document.getElementById("startframe").required = false;
+    document.getElementById("endframe").required = false; 
+    for (j = 0; j < tasks.length; j++){
+      var row = table.insertRow(j+1);
+      var cell1 = row.insertCell(0);
+      var cell2 = row.insertCell(1);
+      var cell3 = row.insertCell(2);
+      var cell4 = row.insertCell(3);
+      var cell5 = row.insertCell(4);
+      var cell6 = row.insertCell(5);
+      var cell7 = row.insertCell(6);
+      var cell8 = row.insertCell(7);
+      var cell9 = row.insertCell(8);
+      cell1.innerHTML = "<input type='text' id='Project" + j + "' name='Project" + j + "' style='color:#006bb3;width:80%;' required>";
+      cell2.innerHTML = "<input type='text' id='Scope" + j + "' name='Scope" + j + "' style='color:#006bb3;width:80%' required>";
+      cell3.innerHTML = "<input type='text' id='Subscope" + j + "' name='Subscope" + j + "' style='color:#006bb3;width:80%' required>";
+      cell4.innerHTML = "<input type='text' id='Task" + j + "' name='Task" + j + "' style='color:#006bb3;width:80%;' required>";
+      cell5.innerHTML = "<input type='text' id='Description" + j + "' name='Description" + j + "' style='color:#006bb3;width:80%' required>";
+      cell6.innerHTML = "<input type='text' id='FMD" + j + "' name='FMD" + j + "' style='color:#006bb3;width:80%' required>";
+      cell7.innerHTML = "<input type='text' id='startframe" + j + "' name='startframe" + j + "' style='color:#006bb3;width:80%' required>";
+      cell8.innerHTML = "<input type='text' id='endframe" + j + "' name='endframe" + j + "' style='color:#006bb3;width:80%' required>";
+      cell9.innerHTML = "<input type='date' id='bidstart" + j + "' name='bidstart" + j + "' style='color:#006bb3;width:80%' required>";
+      document.getElementById("Project" + j).value = document.getElementById("Project").value;
+      document.getElementById("Scope" + j).value = document.getElementById("Scope").value;
+      document.getElementById("Subscope" + j).value = document.getElementById("Subscope").value;
+      document.getElementById("Task" + j).value = tasks[j];
+  }
+  }
+</script>
+<script type="text/javascript">
+  function nullinputtasks(){
+    var addtaskbuttons = document.getElementsByClassName("button3");
+    var addtaskforms = document.getElementsByClassName("taskformbutton");
+    var addtaskexcel = document.getElementsByClassName("taskexcelbutton");
+    var i;
+    for(i=0 ; i<addtaskbuttons.length ; i++){
+      addtaskbuttons[i].style.display = "block";
+      addtaskforms[i].style.display = "none";
+      addtaskexcel[i].style.display = "none";
+    }
+    document.getElementById("Tableform").style.display = "none";
+  }
+</script>
+<script>
+function opennotesadd(x){
+    $('#addnotesmodal').modal('show');
+    console.log(x);
+    var res = x.split("-");
+    var scope = res[0] + "/" + res[1];
+    document.getElementById("Scopenotes").value = scope;
+    document.getElementById("Tasknotes").value = res[2];
+    document.getElementById("INTVersionnotes").value = res[4];
+    document.getElementById("Assignednotes").value = res[3];
+    }
+</script>
+<script>
+  function downloadfiles(x){
+    var select = x.split('-')[0];
+    console.log(select);
+    select = document.getElementsByName(select);
+    console.log(select);
+    var values = [];
+    var j=0;
+      for (var i = 0; i < select.length; i++) {
+         if(select[i].checked == true){
+              values[j]=select[i].value;
+              // console.log(tasks[j]);
+              j++;
+          }
+      }
+      console.log(values);
+  }
+</script>
+<script>
+  
+  function copytext(x){
+    var select = x.split('-')[0];
+    console.log(select);
+    var copyText = document.getElementById(select);
+    // var copy = copyText.value;
+    // copyToClipboard(copy);
+    copyText.select();
+    document.execCommand("copy");
+    // alert("Copied the text: " + copyText.value);
+    // var el = document.createElement('textarea');
+    // el.value = copy;
+    // console.log(el);
+    // document.body.appendChild(el);
+    // el.select();
+    // document.execCommand('copy');
+    // document.body.removeChild(el);
+  }
+</script>  
+</body>
+</html>
