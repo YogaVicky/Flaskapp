@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="../static/css/noteslp.css">
+  <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../static/css/all.min.css">
+  <link rel="stylesheet" href="../static/css/brands.min.css">
+  <link rel="stylesheet" href="../static/css/fontawesome.min.css">
+  <link rel="stylesheet" href="../static/css/regular.min.css">
+  <link rel="stylesheet" href="../static/css/solid.min.css">
+  <link rel="stylesheet" href="../static/css/svg-with-js.min.css">
+  <link rel="stylesheet" href="../static/css/v4-shims.min.css">
+  <link rel="stylesheet" href="../static/css/v4-shims.min.css">
+  <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+  <link rel="stylesheet" href="../static/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">-->
+  <script  src="../static/js/all.min.js"></script>
+  <script  src="../static/js/brands.min.js"></script>
+  <script  src="../static/js/fontawesome.min.js"></script>
+  <script  src="../static/js/solid.min.js"></script>
+  <script  src="../static/js/regular.min.js"></script>
+  <script  src="../static/js/v4-shims.min.js"></script>
+  <script type="text/javascript" src="../static/js/new3.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#project').multiselect({
+        buttonWidth : '180px',
+        nonSelectedText: 'Project Name'
+      });
+    });
+    $(document).ready(function() {
+      $('#type').multiselect({
+        buttonWidth : '180px',
+        nonSelectedText: ' Type Name'
+      });
+    });
+  </script>
+  <title>Notesfeed</title>
+</head>
+<body style="background:#f3f3f1">
+    <div class="header">
+    <h1>&nbsp;<b>Notesfeed</b>
+    <div id="links" >
+    <a href="#" class="btn btn-success" id="homebutton"><i class="fa fa-home" aria-hidden="true"></i><span>Home</span></a>
+    <a href="#" class="btn btn-info" id="notebutton"><i class="fa fa-list-alt" aria-hidden="true"></i><span>Notesfeed</span></a>
+    <a href="#" class="btn btn-warning" id="settingbutton" ><i class="fa fa-key" aria-hidden="true"></i><span>Settings</span></a>
+    <a class="btn btn-danger" href="#" id="logoutbutton"><i class="fa fa-user-times" aria-hidden="true"></i><span>Logout</span></a>
+    <span class="icon"><i id="button1" class="fa fa-bars" onclick="openNav()"></i></span></h1>
+    </div>
+  </div>
+  <div id="mySidebar" class="sidebar">
+    <p id="name"><svg width="40" height="15"><rect x="18" y="0"  width="15" height="15" style="fill:#006bb3;opacity:1" /></svg><b>{{username}}</b></p>
+    <form  onsubmit="return false" method="POST">
+      <div class="form-group">
+        <select type="text" class="multiselect" multiple="multiple" role="multiselect" id="project" name="project">
+          {%for project in projects%}
+            <option value={{project[0]}}>{{project[0]}}</option>
+          {%endfor%}
+        </select>
+      </div>
+      <div class="form-group">
+        <input style="width:85%;" id="scope" type="text" name="scope" placeholder="scope name">
+      </div>
+      <div class="form-group ">
+        <select  placeholder="type name" data-style="btn-default" type="text"  multiple="multiple" role="multiselect" id="type" name="type">
+          {%for type in types%}
+            <option value={{type[0]}}>{{type[0]}}</option>
+          {%endfor%}
+        </select>
+      </div>
+      <div class="form-group">
+        <input style="width:85%;" id="reviewer" type="text" name="reviewer" placeholder="reviewer">
+      </div>
+      <br>
+      <button  onclick="filter()" class="btn "><b>filter</b></button>
+    </form>
+  </div>
+  <div id="project_main">
+    {%for i in proj_default%}
+      {%for j in i%}
+          <article  style="text-align: left;background-color:white;font-size: 20px;padding: 15px;margin-bottom:5px;margin-top:10px;">
+            <div class="clearfix">
+            <div id="{{j[8]}}"></div>
+              <p><span class="hl"><b>{{j[5]}}</b></span> to <span class="hl"><b>{{j[4]}}</b></span> on <span id="demo2" class="hl "><b>{{j[0]}}</b></span>&nbsp;&nbsp;&nbsp;<span id="demo3" class="hl "><b>{{j[9]}}</b></span></p>
+              <p><span class="hl"><b>{{j[1]}} ({{j[3]}})</b></span>&nbsp; under &nbsp;<span ><b>{{j[2]}}</b></span></p>
+              <p style="margin-left:60px;"><b><i>{{j[6]}}</i></b></p>
+              {%if j[7] != ""%}
+                <script>
+                   var attach = "{{j[7]}}".split(".");
+                   len = attach.length;
+                   var ext = attach[len-1];
+                   if(ext == 'jpg')
+                   document.getElementById("{{j[8]}}").innerHTML="<span style='float:right'><a href='../static/tempfiles/{{j[7]}}' download='{{j[7]}}'><embed  class='iframe' src='../static/tempfiles/{{j[7]}}' width='70%' height='100px'></embed></a></span>";
+                   if(ext == 'pdf')
+                   document.getElementById("{{j[8]}}").innerHTML="<span style='float:right'><a href='../static/tempfiles/{{j[7]}}' download='{{j[7]}}'><button class='dbutton'><i class = 'fas fa-file-pdf fa-3x '></i></button></a></span>";
+                   if(ext == 'log' || ext == 'txt')
+                   document.getElementById("{{j[8]}}").innerHTML="<span style='float:right'><a href='../static/tempfiles/{{j[7]}}' download='{{j[7]}}'><button class='dbutton'><i class = 'fas fa-file-alt fa-3x '></i></button></a></span>";
+               </script>
+              {%endif%}   
+            </div>
+          </article>
+      {%endfor%} 
+    {%endfor%}
+  </div>
+  <div id="ajaxData" ></div>
+  <br><br><br>
+  <p id="noResult"></p>
+  <script type="text/javascript" src="../static/js/new1.js"></script>
+  <script type="text/javascript" src="../static/js/new2.js"></script>
+  <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="../static/js/select.js"></script>
+  <script type="text/javascript" src="../static/js/auto.js"></script>
+  <script type="text/javascript">
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+      document.getElementById("button1").className="fa fa-bell";
+      document.getElementById("button1").onclick=closeNav;
+    }
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = 0;
+      document.getElementById("button1").className="fa fa-close";
+      document.getElementById("button1").onclick=openNav;
+    }
+  </script>
+   <script>
+      var scopes=[];
+      var i=0;
+      {%for scope in scopes%}
+      scopes[i] = {{scope[0]|tojson}}
+      i++;
+      {%endfor%}
+      autocomplete(document.getElementById("scope"), scopes);
+  </script>
+  <script>
+      var reviewers=[];
+      var i=0;
+      {%for reviewer in reviewers%}
+      reviewers[i] = {{reviewer[0]|tojson}}
+      i++;
+      {%endfor%}
+      autocomplete(document.getElementById("reviewer"), reviewers);
+  </script>
+  <script type="text/javascript">
+     function formatDate(date) {
+      var d = new Date(date),
+      month = '' + (d.getMonth() + 1),
+      day = '' + d.getDate(),
+      year = d.getFullYear();
+
+      if (month.length < 2) month = '0' + month;
+      if (day.length < 2) day = '0' + day;
+
+      return [year, month, day].join('-');
+    }
+  </script>
+  <script type="text/javascript">
+    function filter(){
+
+
+      // scopeinput
+      var scope=document.getElementById("scope").value;
+      // console.log(scope);
+
+      // reviewerinput
+      var reviewer=document.getElementById("reviewer").value;
+
+      // projectinput
+      var x=document.getElementById("project");
+      var project=[];
+      var j=0;
+      for (var i = 0; i < x.options.length; i++) {
+         if(x.options[i].selected == true){
+              project[j]=x.options[i].value;
+              // console.log(project[j]);
+              j++;
+          }
+      }
+      if(project[0]=="multiselect-all")
+      project.shift();
+
+
+      // typeinput
+      j=0;
+      var y=document.getElementById("type");
+      var type=[];
+      for (var i = 0; i < y.options.length; i++) {
+         if(y.options[i].selected == true){
+              type[j]=y.options[i].value;
+              // console.log(type[j]);
+              j++;
+          }
+      }
+      if(type[0]=="multiselect-all")
+      type.shift();
+
+
+        var params = 
+        {
+          pNames : project,
+          sNames : scope,
+          tNames : type,
+          rNames : reviewer
+        };
+       
+
+
+        if((type.length != 0) || (project.length != 0) || (scope != "") || (reviewer != "")){
+         console.log(JSON.stringify(params));
+          var xhr=new XMLHttpRequest();
+          xhr.open('POST','/noteslp','true');
+          document.getElementById("noResult").innerHTML = "";
+          xhr.onload = function () {
+              // do something to response
+              var proj_filter = JSON.parse(this.responseText);
+              proj_filter = proj_filter.proj_filter;
+              var i;
+              var c1 = "";
+              var current = [];
+              for(i = 0; i < proj_filter.length;i++){ 
+                current = proj_filter[i];
+                console.log(current);
+                var date = new Date(current[9]);
+                var t = current[9].split(' ');
+                var time = t[4];
+                d = formatDate(date);
+                c1 =  c1 + "<article  style='text-align: left;background-color:white;font-size: 20px;padding: 15px;margin-bottom:5px;margin-top:10px;'><div class='clearfix'>";
+              var attach = current[7].split(".");
+                   len = attach.length;
+                   var ext = attach[len-1];
+                   if(ext == 'jpg')
+                   c1 = c1 + "<span style='float:right;'>" + "<a href='../static/tempfiles/" + current[7] + "'"+  " download=" + "'" + current[7] +"'" + "><embed  class='iframe' src='../static/tempfiles/" + current[7] + "'" + "width='70%' height='100px'></embed></a></span>";
+                   if(ext == 'pdf')
+                   c1 = c1 + "<span style='float:right;'>" + "<a href='../static/tempfiles/" + current[7] + "'" +" download=" + "'"+ current[7] +"'" + "><button class='dbutton'><i class = 'fas fa-file-pdf fa-3x '></i></button></a></span>";
+                   if(ext == 'log' || ext == 'txt')
+                   c1 = c1 + "<span style = 'float:right;'>" + "<a href='../static/tempfiles/" + current[7] + "'" + " download=" + "'" + current[7] +"'" + "><button class='dbutton'><i class = 'fas fa-file-alt fa-3x '></i></button></a></span>";
+                   c1 = c1 + "<p><span class='hl'><b>" +  current[5] + "</b></span>" + " to " + "<span  class='hl'><b>" +current[4] +
+                    "</b></span>" + " on " + "<span  class='hl'><b>" +current[0] + "</b></span> &nbsp;&nbsp;&nbsp;<span id='demo3' class='hl '><b>" + d +" " + time +
+                     "</b></span></p>" + "<p><span class='hl'><b>" + current[1] + current[3] + "</b></span>&nbsp; under &nbsp;<span ><b>" + current[2] + "</b></span></p>" +"<p style='margin-left:60px;'><i><b>" + current[6] + "</b></i></p>";
+              c1 = c1+ "</div></article>";
+            }
+              if(proj_filter.length == 0){
+              document.getElementById("noResult").style.display = "block";
+              document.getElementById("ajaxData").innerHTML = "";
+              document.getElementById("project_main").style.display = "none";
+              document.getElementById("noResult").innerHTML = "No results found!";
+              }
+              else{
+              document.getElementById("project_main").style.display = "none";      
+              document.getElementById("ajaxData").style.display = "block";
+              document.getElementById("ajaxData").innerHTML = c1;
+              } 
+              }    
+          xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+          var data = JSON.stringify(params);
+          console.log(data);
+          xhr.send(data);
+      }
+          else{
+          document.getElementById("project_main").style.display = "block";
+          document.getElementById("noResult").style.display = "none";
+          document.getElementById("ajaxData").style.display = "none";
+        }
+    }
+
+  </script>
+</body>
+</html>
